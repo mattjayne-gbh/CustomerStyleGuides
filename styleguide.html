@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Einstein Bros. Bagels — Design System</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Arvo:ital,wght@0,400;0,700;1,400&family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─────────────────────────────────────────
+       BRAND FONTS
+    ───────────────────────────────────────── */
+    @font-face {
+      font-family: "Melvin Tall";
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url("https://einsteinbros.com/wp-content/themes/einstein19/fonts/ebb_melvyn_tall-webfont.woff2") format("woff2"),
+           url("https://einsteinbros.com/wp-content/themes/einstein19/fonts/ebb_melvyn_tall-webfont.woff") format("woff");
+    }
+    @font-face {
+      font-family: "Melvin Regular";
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url("https://einsteinbros.com/wp-content/uploads/2024/01/EBB_Melvyn_Regular-Regular.woff2") format("woff2"),
+           url("https://einsteinbros.com/wp-content/uploads/2024/01/EBB_Melvyn_Regular-Regular.woff") format("woff");
+    }
+
+    /* ─────────────────────────────────────────
+       DESIGN TOKENS
+    ───────────────────────────────────────── */
+    :root {
+      /* Colors */
+      --color-primary:       #FEBC11;
+      --color-primary-dark:  #E5A637;
+      --color-secondary:     #4A3728;
+      --color-body:          #775E4B;
+      --color-muted:         #807B79;
+      --color-muted-light:   #666666;
+      --color-dark:          #32373C;
+      --color-dark-alt:      #333741;
+      --color-accent-red:    #D97757;
+      --color-success:       #32AE88;
+      --color-success-dark:  #46825A;
+      --color-cream:         #EFE7DE;
+      --color-light-bg:      #F4F4F4;
+      --color-border:        #C1C1C1;
+      --color-border-input:  #D9D9D9;
+      --color-white:         #FFFFFF;
+      --color-black:         #000000;
+
+      /* Typography */
+      --font-display:  "Melvin Tall", sans-serif;
+      --font-heading:  "Melvin Regular", sans-serif;
+      --font-serif:    Arvo, serif;
+      --font-body:     Lato, sans-serif;
+
+      /* Font Sizes */
+      --fs-hero:    96px;
+      --fs-h2:      34px;
+      --fs-h3:      20px;
+      --fs-h4:      16px;
+      --fs-body:    18px;
+      --fs-body-sm: 17px;
+      --fs-small:   14px;
+      --fs-xs:      12px;
+
+      /* Line Heights */
+      --lh-hero:    74px;
+      --lh-h2:      40.8px;
+      --lh-body:    27px;
+      --lh-body-sm: 25.68px;
+      --lh-small:   22px;
+
+      /* Font Weights */
+      --fw-light:   300;
+      --fw-regular: 400;
+      --fw-bold:    700;
+      --fw-black:   900;
+
+      /* Spacing */
+      --space-1:  4px;
+      --space-2:  8px;
+      --space-3:  12px;
+      --space-4:  16px;
+      --space-5:  20px;
+      --space-6:  24px;
+      --space-7:  32px;
+      --space-8:  40px;
+      --space-9:  48px;
+      --space-10: 64px;
+      --space-11: 80px;
+      --space-12: 96px;
+
+      /* Border Radius */
+      --radius-sm:   4px;
+      --radius-md:   8px;
+      --radius-lg:   16px;
+      --radius-xl:   24px;
+      --radius-full: 9999px;
+
+      /* Shadows */
+      --shadow-nav:   rgba(98,98,98,0.2) 0px 4px 6px 0px;
+      --shadow-card:  rgba(0,0,0,0.15) 0px 8px 20px 0px;
+      --shadow-sm:    rgba(0,0,0,0.05) 0px 2px 4px 0px;
+      --shadow-input: rgba(128,128,128,0.5) 0px 0px 5px 0px;
+
+      /* Layout */
+      --max-width:     1440px;
+      --container-pad: 32px;
+
+      /* Style Guide Internals */
+      --sg-sidebar: 220px;
+      --sg-content-pad: 48px;
+    }
+
+    /* ─────────────────────────────────────────
+       RESET
+    ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-body);
+      font-size: var(--fs-body-sm);
+      color: var(--color-body);
+      background: var(--color-light-bg);
+      display: flex;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { color: inherit; text-decoration: none; }
+    code {
+      font-family: "SF Mono", "Fira Mono", monospace;
+      font-size: 12px;
+      background: rgba(0,0,0,0.06);
+      border-radius: var(--radius-sm);
+      padding: 2px 6px;
+      color: var(--color-dark);
+    }
+
+    /* ─────────────────────────────────────────
+       SIDEBAR
+    ───────────────────────────────────────── */
+    .sg-sidebar {
+      width: var(--sg-sidebar);
+      min-height: 100vh;
+      background: var(--color-dark-alt);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .sg-sidebar__brand {
+      padding: var(--space-6) var(--space-5) var(--space-5);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .sg-sidebar__logo {
+      font-family: var(--font-display);
+      font-size: 13px;
+      font-weight: var(--fw-bold);
+      color: var(--color-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.3;
+    }
+    .sg-sidebar__sub {
+      font-family: var(--font-body);
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 2px;
+    }
+    .sg-sidebar__nav { padding: var(--space-4) 0; flex: 1; }
+    .sg-sidebar__section-label {
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.28);
+      padding: var(--space-4) var(--space-5) var(--space-2);
+    }
+    .sg-sidebar__link {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 7px var(--space-5);
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      transition: all 0.15s ease;
+      border-left: 2px solid transparent;
+    }
+    .sg-sidebar__link:hover {
+      color: var(--color-white);
+      background: rgba(255,255,255,0.05);
+      border-left-color: var(--color-primary);
+    }
+    .sg-sidebar__link .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.4;
+      flex-shrink: 0;
+    }
+    .sg-sidebar__footer {
+      padding: var(--space-4) var(--space-5);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 10px;
+      color: rgba(255,255,255,0.2);
+    }
+
+    /* ─────────────────────────────────────────
+       MAIN CONTENT
+    ───────────────────────────────────────── */
+    .sg-main {
+      flex: 1;
+      overflow-x: hidden;
+    }
+
+    /* Page Header */
+    .sg-page-header {
+      background: var(--color-secondary);
+      padding: var(--space-10) var(--sg-content-pad);
+      position: relative;
+      overflow: hidden;
+    }
+    .sg-page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V18L28 2l28 16v32z' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3Cpath d='M28 100L0 84V52l28-16 28 16v32z' fill='none' stroke='rgba(255,255,255,0.04)' stroke-width='1'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .sg-page-header__eyebrow {
+      font-family: var(--font-body);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--color-primary);
+      margin-bottom: var(--space-3);
+    }
+    .sg-page-header__title {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      color: var(--color-white);
+      line-height: 0.92;
+      margin-bottom: var(--space-5);
+    }
+    .sg-page-header__title span { color: var(--color-primary); }
+    .sg-page-header__meta {
+      font-family: var(--font-body);
+      font-size: var(--fs-small);
+      color: rgba(255,255,255,0.4);
+      display: flex;
+      gap: var(--space-6);
+    }
+    .sg-page-header__meta strong { color: rgba(255,255,255,0.7); }
+
+    /* Section wrapper */
+    .sg-section {
+      padding: var(--space-10) var(--sg-content-pad);
+      border-bottom: 1px solid var(--color-border);
+      background: var(--color-white);
+    }
+    .sg-section:nth-child(even) { background: var(--color-white); }
+    .sg-section--cream { background: var(--color-cream); }
+    .sg-section--dark  { background: var(--color-dark); }
+
+    .sg-section__header {
+      margin-bottom: var(--space-8);
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-4);
+      padding-bottom: var(--space-5);
+      border-bottom: 2px solid var(--color-primary);
+    }
+    .sg-section__title {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      letter-spacing: 0.02em;
+    }
+    .sg-section--dark .sg-section__title { color: var(--color-white); }
+    .sg-section__num {
+      font-family: var(--font-body);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      color: var(--color-primary);
+      background: var(--color-secondary);
+      padding: 3px 8px;
+      border-radius: var(--radius-full);
+      letter-spacing: 0.06em;
+    }
+
+    /* Sub-groups within sections */
+    .sg-group { margin-bottom: var(--space-8); }
+    .sg-group__label {
+      font-family: var(--font-body);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-muted);
+      margin-bottom: var(--space-4);
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .sg-group__label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--color-border);
+    }
+
+    /* Token table rows */
+    .sg-token-row {
+      display: grid;
+      grid-template-columns: 48px 1fr 1fr 1fr;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid var(--color-light-bg);
+      font-size: var(--fs-small);
+    }
+    .sg-token-row:last-child { border-bottom: none; }
+    .sg-token-swatch {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(0,0,0,0.1);
+      flex-shrink: 0;
+    }
+    .sg-token-name  { font-weight: var(--fw-bold); color: var(--color-secondary); }
+    .sg-token-var   { font-family: "SF Mono","Fira Mono",monospace; font-size: 11px; color: var(--color-accent-red); }
+    .sg-token-value { color: var(--color-muted); }
+
+    /* ─────────────────────────────────────────
+       COLOR SWATCHES
+    ───────────────────────────────────────── */
+    .sg-color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: var(--space-4);
+    }
+    .sg-color-card {
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+    .sg-color-card__swatch {
+      height: 80px;
+    }
+    .sg-color-card__info {
+      background: var(--color-white);
+      padding: var(--space-3) var(--space-3);
+    }
+    .sg-color-card__name {
+      font-weight: var(--fw-bold);
+      font-size: 12px;
+      color: var(--color-secondary);
+      margin-bottom: 2px;
+    }
+    .sg-color-card__var  { font-family: "SF Mono","Fira Mono",monospace; font-size: 10px; color: var(--color-accent-red); }
+    .sg-color-card__hex  { font-size: 11px; color: var(--color-muted); margin-top: 2px; }
+
+    /* ─────────────────────────────────────────
+       TYPOGRAPHY SPECIMENS
+    ───────────────────────────────────────── */
+    .sg-type-row {
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: var(--space-6);
+      align-items: start;
+      padding: var(--space-6) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .sg-type-row:last-child { border-bottom: none; }
+    .sg-type-meta {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+      padding-top: var(--space-2);
+    }
+    .sg-type-meta-label {
+      font-size: 11px;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color-muted);
+    }
+    .sg-type-meta-val { font-size: 12px; color: var(--color-body); }
+
+    /* ─────────────────────────────────────────
+       SPACING SCALE
+    ───────────────────────────────────────── */
+    .sg-space-row {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      padding: var(--space-2) 0;
+    }
+    .sg-space-bar {
+      height: 24px;
+      background: var(--color-primary);
+      border-radius: var(--radius-sm);
+      opacity: 0.85;
+    }
+    .sg-space-label {
+      font-family: "SF Mono","Fira Mono",monospace;
+      font-size: 11px;
+      color: var(--color-accent-red);
+      min-width: 130px;
+    }
+    .sg-space-val {
+      font-size: 12px;
+      color: var(--color-muted);
+      min-width: 36px;
+    }
+
+    /* ─────────────────────────────────────────
+       RADIUS DEMOS
+    ───────────────────────────────────────── */
+    .sg-radius-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-6);
+      align-items: flex-end;
+    }
+    .sg-radius-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-3);
+    }
+    .sg-radius-box {
+      width: 72px;
+      height: 72px;
+      background: var(--color-primary);
+      border: 2px solid var(--color-secondary);
+    }
+    .sg-radius-name { font-size: 11px; font-weight: var(--fw-bold); color: var(--color-secondary); }
+    .sg-radius-var  { font-family: "SF Mono","Fira Mono",monospace; font-size: 10px; color: var(--color-accent-red); }
+
+    /* ─────────────────────────────────────────
+       SHADOW DEMOS
+    ───────────────────────────────────────── */
+    .sg-shadow-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-8);
+    }
+    .sg-shadow-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-4);
+    }
+    .sg-shadow-box {
+      width: 100px;
+      height: 64px;
+      background: var(--color-white);
+      border-radius: var(--radius-md);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .sg-shadow-label {
+      font-family: "SF Mono","Fira Mono",monospace;
+      font-size: 10px;
+      color: var(--color-accent-red);
+      text-align: center;
+    }
+
+    /* ─────────────────────────────────────────
+       BUTTONS (reuse brand classes)
+    ───────────────────────────────────────── */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background-color: var(--color-primary);
+      color: var(--color-secondary);
+      font-family: var(--font-serif);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-bold);
+      line-height: 22px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      text-decoration: none;
+    }
+    .btn-primary:hover { background-color: var(--color-primary-dark); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background-color: var(--color-secondary);
+      color: var(--color-white);
+      font-family: var(--font-serif);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { background-color: var(--color-dark); transform: translateY(-1px); }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background-color: transparent;
+      color: var(--color-secondary);
+      font-family: var(--font-serif);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 9px 20px;
+      border-radius: var(--radius-md);
+      border: 2px solid var(--color-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-outline:hover { background-color: var(--color-secondary); color: var(--color-white); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background-color: transparent;
+      color: var(--color-body);
+      font-family: var(--font-body);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 9px 20px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-ghost:hover { border-color: var(--color-body); color: var(--color-secondary); }
+
+    .btn-danger {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      background-color: var(--color-accent-red);
+      color: var(--color-white);
+      font-family: var(--font-serif);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 20px;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: filter 0.2s ease;
+    }
+    .btn-danger:hover { filter: brightness(1.1); }
+
+    .btn-sm { padding: 6px 12px; font-size: 11px; }
+    .btn-lg { padding: 14px 28px; font-size: 15px; }
+
+    .sg-btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-4);
+      padding: var(--space-5) 0;
+    }
+
+    /* ─────────────────────────────────────────
+       FORMS
+    ───────────────────────────────────────── */
+    .sg-form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-5);
+      max-width: 700px;
+    }
+    .sg-form-field { display: flex; flex-direction: column; gap: var(--space-2); }
+    .sg-form-field--full { grid-column: 1 / -1; }
+    .sg-label {
+      font-family: var(--font-body);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-bold);
+      color: var(--color-secondary);
+      letter-spacing: 0.02em;
+    }
+    .sg-input {
+      font-family: var(--font-body);
+      font-size: var(--fs-body-sm);
+      color: var(--color-secondary);
+      background: var(--color-white);
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      width: 100%;
+      line-height: 24px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      outline: none;
+    }
+    .sg-input:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 3px rgba(254,188,17,0.2);
+    }
+    .sg-input::placeholder { color: var(--color-muted); }
+    .sg-input--error { border-color: var(--color-accent-red); }
+    .sg-input--error:focus { box-shadow: 0 0 0 3px rgba(217,119,87,0.2); }
+    .sg-input--success { border-color: var(--color-success); }
+    .sg-hint { font-size: var(--fs-xs); color: var(--color-muted); }
+    .sg-hint--error { color: var(--color-accent-red); }
+
+    /* ─────────────────────────────────────────
+       BADGES
+    ───────────────────────────────────────── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: var(--radius-full);
+      line-height: 1.5;
+    }
+    .badge--primary  { background: var(--color-primary);     color: var(--color-secondary); }
+    .badge--dark     { background: var(--color-secondary);   color: var(--color-white); }
+    .badge--accent   { background: var(--color-accent-red);  color: var(--color-white); }
+    .badge--success  { background: var(--color-success);     color: var(--color-white); }
+    .badge--muted    { background: var(--color-border);      color: var(--color-dark); }
+    .badge--cream    { background: var(--color-cream);       color: var(--color-secondary); }
+    .badge--outline  {
+      background: transparent;
+      color: var(--color-secondary);
+      border: 1.5px solid var(--color-secondary);
+    }
+
+    .badge-hex {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--color-accent-red);
+      color: var(--color-white);
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: var(--fw-bold);
+      width: 72px;
+      height: 72px;
+      clip-path: polygon(50% 0%,100% 25%,100% 75%,50% 100%,0% 75%,0% 25%);
+      text-transform: uppercase;
+    }
+    .badge-hex--lg {
+      font-size: 26px;
+      width: 96px;
+      height: 96px;
+    }
+
+    .sg-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-4) 0;
+    }
+
+    /* ─────────────────────────────────────────
+       CARDS
+    ───────────────────────────────────────── */
+    .card {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: rgba(0,0,0,0.2) 0px 12px 28px 0px; }
+    .card__img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: var(--color-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card__img-placeholder {
+      width: 100%;
+      aspect-ratio: 4/3;
+      background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-primary-dark) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+    }
+    .card__body { padding: var(--space-5) var(--space-6); }
+    .card__eyebrow {
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-primary-dark);
+      margin-bottom: var(--space-2);
+    }
+    .card__title {
+      font-family: var(--font-serif);
+      font-size: 18px;
+      font-weight: var(--fw-bold);
+      color: var(--color-secondary);
+      margin-bottom: var(--space-2);
+      line-height: 1.3;
+    }
+    .card__desc {
+      font-family: var(--font-body);
+      font-size: var(--fs-small);
+      color: var(--color-body);
+      line-height: 1.6;
+      margin-bottom: var(--space-4);
+    }
+    .card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-4) var(--space-6);
+      border-top: 1px solid var(--color-light-bg);
+      background: rgba(0,0,0,0.01);
+    }
+    .card__price {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: var(--fw-bold);
+      color: var(--color-secondary);
+    }
+    .card__calorie {
+      font-size: var(--fs-xs);
+      color: var(--color-muted);
+    }
+    .sg-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      max-width: 900px;
+    }
+
+    /* ─────────────────────────────────────────
+       ANNOUNCEMENT BAR
+    ───────────────────────────────────────── */
+    .announcement-bar {
+      background-color: var(--color-primary);
+      color: var(--color-secondary);
+      font-family: var(--font-body);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-bold);
+      text-align: center;
+      padding: var(--space-2) var(--space-6);
+      letter-spacing: 0.02em;
+    }
+    .announcement-bar a {
+      color: var(--color-secondary);
+      text-decoration: underline;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+    }
+
+    /* ─────────────────────────────────────────
+       NAVIGATION MOCKUP
+    ───────────────────────────────────────── */
+    .site-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--color-white);
+      padding: 12px 32px;
+      box-shadow: var(--shadow-nav);
+    }
+    .site-nav__logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--color-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 8px;
+      color: var(--color-primary);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.2;
+      padding: 4px;
+    }
+    .site-nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-5);
+      list-style: none;
+    }
+    .site-nav__links a {
+      font-family: var(--font-body);
+      font-size: var(--fs-body-sm);
+      color: var(--color-body);
+      padding: 15px 4px;
+      transition: color 0.2s;
+    }
+    .site-nav__links a:hover { color: var(--color-secondary); }
+    .site-nav__actions { display: flex; gap: var(--space-3); align-items: center; }
+    .site-nav__location {
+      font-size: var(--fs-small);
+      color: var(--color-body);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    /* ─────────────────────────────────────────
+       HERO MOCKUP
+    ───────────────────────────────────────── */
+    .sg-hero-demo {
+      position: relative;
+      width: 100%;
+      min-height: 300px;
+      background: var(--color-primary-dark);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .sg-hero-demo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100'%3E%3Cpath d='M28 66L0 50V18L28 2l28 16v32z' fill='none' stroke='rgba(255,255,255,0.12)' stroke-width='1'/%3E%3Cpath d='M28 100L0 84V52l28-16 28 16v32z' fill='none' stroke='rgba(255,255,255,0.12)' stroke-width='1'/%3E%3C/svg%3E");
+    }
+    .sg-hero-demo__content {
+      position: relative;
+      z-index: 1;
+      margin-left: 5%;
+      background: rgba(255,255,255,0.92);
+      padding: 32px 40px;
+      border-radius: var(--radius-lg);
+      max-width: 380px;
+      text-align: center;
+    }
+    .sg-hero-demo__eyebrow {
+      font-family: var(--font-body);
+      font-size: var(--fs-xs);
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--color-muted);
+      margin-bottom: var(--space-2);
+    }
+    .sg-hero-demo__title {
+      font-family: var(--font-display);
+      font-size: 52px;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      color: var(--color-secondary);
+      line-height: 0.9;
+      margin-bottom: var(--space-4);
+    }
+    .sg-hero-demo__desc {
+      font-size: var(--fs-small);
+      line-height: 1.6;
+      color: var(--color-body);
+      margin-bottom: var(--space-5);
+    }
+    .sg-hero-demo__badge {
+      position: absolute;
+      top: var(--space-5);
+      right: var(--space-6);
+      z-index: 2;
+    }
+
+    /* ─────────────────────────────────────────
+       SECTION VARIANTS
+    ───────────────────────────────────────── */
+    .sg-section-demo {
+      border-radius: var(--radius-lg);
+      padding: var(--space-8) var(--space-7);
+      margin-bottom: var(--space-5);
+    }
+    .sg-section-demo h3 {
+      font-family: var(--font-serif);
+      font-size: var(--fs-h2);
+      font-weight: var(--fw-bold);
+      margin-bottom: var(--space-3);
+    }
+    .sg-section-demo p {
+      font-size: var(--fs-body);
+      line-height: var(--lh-body);
+      max-width: 540px;
+    }
+    .sg-section-demo--white  { background: var(--color-white); border: 1px solid var(--color-border); }
+    .sg-section-demo--cream  { background: var(--color-cream); }
+    .sg-section-demo--gold   { background: var(--color-primary); }
+    .sg-section-demo--dark   { background: var(--color-dark); color: var(--color-white); }
+    .sg-section-demo--dark h3 { color: var(--color-white); }
+
+    /* ─────────────────────────────────────────
+       FOOTER MOCKUP
+    ───────────────────────────────────────── */
+    .sg-footer-demo {
+      background: var(--color-dark-alt);
+      color: var(--color-white);
+      padding: var(--space-8) var(--space-7);
+      border-radius: var(--radius-lg);
+    }
+    .sg-footer-demo__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-7);
+      margin-bottom: var(--space-6);
+    }
+    .sg-footer-demo__heading {
+      font-family: var(--font-serif);
+      font-size: var(--fs-small);
+      font-weight: var(--fw-bold);
+      color: var(--color-white);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-4);
+    }
+    .sg-footer-demo__links { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+    .sg-footer-demo__links a {
+      font-size: var(--fs-small);
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .sg-footer-demo__links a:hover { color: var(--color-primary); }
+    .sg-footer-demo__bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: var(--space-4);
+      font-size: var(--fs-xs);
+      color: rgba(255,255,255,0.28);
+      text-align: center;
+    }
+
+    /* ─────────────────────────────────────────
+       UTILITY DISPLAY TABLE
+    ───────────────────────────────────────── */
+    .sg-util-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: var(--fs-small);
+    }
+    .sg-util-table thead th {
+      text-align: left;
+      font-weight: var(--fw-bold);
+      font-size: var(--fs-xs);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--color-muted);
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 2px solid var(--color-border);
+      background: var(--color-light-bg);
+    }
+    .sg-util-table tbody td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-light-bg);
+      vertical-align: middle;
+    }
+    .sg-util-table tbody tr:last-child td { border-bottom: none; }
+    .sg-util-table .demo-cell { display: flex; align-items: center; gap: var(--space-3); }
+    .sg-preview-box {
+      width: 40px;
+      height: 24px;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    /* ─────────────────────────────────────────
+       MISC STYLE GUIDE CHROME
+    ───────────────────────────────────────── */
+    .sg-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: var(--space-6) 0;
+    }
+    .sg-note {
+      background: rgba(254,188,17,0.12);
+      border-left: 3px solid var(--color-primary);
+      padding: var(--space-3) var(--space-5);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: var(--fs-small);
+      color: var(--color-secondary);
+      margin-bottom: var(--space-6);
+    }
+    .sg-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: var(--fw-bold);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      background: var(--color-secondary);
+      color: var(--color-primary);
+      margin-left: var(--space-2);
+      vertical-align: middle;
+    }
+    .sg-tag--new { background: var(--color-accent-red); color: var(--color-white); }
+
+    /* Scroll offset for sticky header */
+    [id] { scroll-margin-top: 20px; }
+
+    /* ─────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────── */
+    @media (max-width: 900px) {
+      :root { --sg-sidebar: 0px; --sg-content-pad: 24px; }
+      .sg-sidebar { display: none; }
+      .sg-color-grid { grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); }
+      .sg-card-grid { grid-template-columns: repeat(2,1fr); }
+      .sg-form-grid { grid-template-columns: 1fr; }
+      .sg-footer-demo__grid { grid-template-columns: repeat(2,1fr); }
+      .sg-page-header__title { font-size: 44px; }
+    }
+    @media (max-width: 600px) {
+      .sg-card-grid { grid-template-columns: 1fr; }
+      .sg-footer-demo__grid { grid-template-columns: 1fr; }
+      .sg-type-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════ SIDEBAR ═══════════ -->
+  <aside class="sg-sidebar">
+    <div class="sg-sidebar__brand">
+      <div class="sg-sidebar__logo">Einstein Bros.<br>Bagels</div>
+      <div class="sg-sidebar__sub">Design System · 2026</div>
+    </div>
+    <nav class="sg-sidebar__nav">
+      <div class="sg-sidebar__section-label">Foundations</div>
+      <a class="sg-sidebar__link" href="#colors"><span class="dot"></span>Colors</a>
+      <a class="sg-sidebar__link" href="#typography"><span class="dot"></span>Typography</a>
+      <a class="sg-sidebar__link" href="#spacing"><span class="dot"></span>Spacing</a>
+      <a class="sg-sidebar__link" href="#radius"><span class="dot"></span>Border Radius</a>
+      <a class="sg-sidebar__link" href="#shadows"><span class="dot"></span>Shadows</a>
+      <div class="sg-sidebar__section-label">Components</div>
+      <a class="sg-sidebar__link" href="#buttons"><span class="dot"></span>Buttons</a>
+      <a class="sg-sidebar__link" href="#forms"><span class="dot"></span>Forms</a>
+      <a class="sg-sidebar__link" href="#badges"><span class="dot"></span>Badges</a>
+      <a class="sg-sidebar__link" href="#cards"><span class="dot"></span>Cards</a>
+      <div class="sg-sidebar__section-label">Patterns</div>
+      <a class="sg-sidebar__link" href="#announcement"><span class="dot"></span>Announcement Bar</a>
+      <a class="sg-sidebar__link" href="#navigation"><span class="dot"></span>Navigation</a>
+      <a class="sg-sidebar__link" href="#hero"><span class="dot"></span>Hero</a>
+      <a class="sg-sidebar__link" href="#sections"><span class="dot"></span>Section Backgrounds</a>
+      <a class="sg-sidebar__link" href="#footer"><span class="dot"></span>Footer</a>
+      <div class="sg-sidebar__section-label">Reference</div>
+      <a class="sg-sidebar__link" href="#utilities"><span class="dot"></span>Utility Classes</a>
+    </nav>
+    <div class="sg-sidebar__footer">einsteinbros.com · scraped Feb 2026</div>
+  </aside>
+
+  <!-- ═══════════ MAIN ═══════════ -->
+  <main class="sg-main">
+
+    <!-- Page Header -->
+    <header class="sg-page-header">
+      <div class="sg-page-header__eyebrow">Design System</div>
+      <h1 class="sg-page-header__title">Einstein Bros.<br><span>Bagels</span></h1>
+      <div class="sg-page-header__meta">
+        <span><strong>3</strong> fonts</span>
+        <span><strong>18</strong> color tokens</span>
+        <span><strong>12</strong> spacing steps</span>
+        <span><strong>5</strong> radius scales</span>
+        <span><strong>31</strong> images</span>
+      </div>
+    </header>
+
+    <!-- ── 1. COLORS ── -->
+    <section class="sg-section" id="colors">
+      <div class="sg-section__header">
+        <span class="sg-section__num">01</span>
+        <h2 class="sg-section__title">Colors</h2>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Brand Core</div>
+        <div class="sg-color-grid">
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-primary)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Primary</div>
+              <div class="sg-color-card__var">--color-primary</div>
+              <div class="sg-color-card__hex">#FEBC11 · Golden Yellow</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-primary-dark)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Primary Dark</div>
+              <div class="sg-color-card__var">--color-primary-dark</div>
+              <div class="sg-color-card__hex">#E5A637 · Hover Gold</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-secondary)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Secondary</div>
+              <div class="sg-color-card__var">--color-secondary</div>
+              <div class="sg-color-card__hex">#4A3728 · Dark Brown</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-body)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Body</div>
+              <div class="sg-color-card__var">--color-body</div>
+              <div class="sg-color-card__hex">#775E4B · Warm Brown</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-accent-red)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Accent Red</div>
+              <div class="sg-color-card__var">--color-accent-red</div>
+              <div class="sg-color-card__hex">#D97757 · Burnt Orange</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-cream)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Cream</div>
+              <div class="sg-color-card__var">--color-cream</div>
+              <div class="sg-color-card__hex">#EFE7DE · Section BG</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Neutrals &amp; UI</div>
+        <div class="sg-color-grid">
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-dark)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Dark</div>
+              <div class="sg-color-card__var">--color-dark</div>
+              <div class="sg-color-card__hex">#32373C</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-dark-alt)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Dark Alt</div>
+              <div class="sg-color-card__var">--color-dark-alt</div>
+              <div class="sg-color-card__hex">#333741 · Footer</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-muted)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Muted</div>
+              <div class="sg-color-card__var">--color-muted</div>
+              <div class="sg-color-card__hex">#807B79 · Placeholder</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-success)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Success</div>
+              <div class="sg-color-card__var">--color-success</div>
+              <div class="sg-color-card__hex">#32AE88</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-light-bg)"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Light BG</div>
+              <div class="sg-color-card__var">--color-light-bg</div>
+              <div class="sg-color-card__hex">#F4F4F4</div>
+            </div>
+          </div>
+          <div class="sg-color-card">
+            <div class="sg-color-card__swatch" style="background:var(--color-border);border:1px solid #eee"></div>
+            <div class="sg-color-card__info">
+              <div class="sg-color-card__name">Border</div>
+              <div class="sg-color-card__var">--color-border</div>
+              <div class="sg-color-card__hex">#C1C1C1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 2. TYPOGRAPHY ── -->
+    <section class="sg-section sg-section--cream" id="typography">
+      <div class="sg-section__header">
+        <span class="sg-section__num">02</span>
+        <h2 class="sg-section__title">Typography</h2>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Font Families</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:var(--space-5);margin-bottom:var(--space-6)">
+          <div style="background:var(--color-white);border-radius:var(--radius-md);padding:var(--space-5);box-shadow:var(--shadow-sm)">
+            <div style="font-family:var(--font-display);font-size:36px;font-weight:700;text-transform:uppercase;color:var(--color-secondary);line-height:1;margin-bottom:var(--space-3)">Melvin Tall</div>
+            <code>--font-display</code>
+            <div style="margin-top:var(--space-2);font-size:11px;color:var(--color-muted)">Brand display font · Hero &amp; stamps · All-caps</div>
+          </div>
+          <div style="background:var(--color-white);border-radius:var(--radius-md);padding:var(--space-5);box-shadow:var(--shadow-sm)">
+            <div style="font-family:var(--font-heading);font-size:36px;font-weight:400;color:var(--color-secondary);line-height:1;margin-bottom:var(--space-3)">Melvin Regular</div>
+            <code>--font-heading</code>
+            <div style="margin-top:var(--space-2);font-size:11px;color:var(--color-muted)">Brand heading font · H1 · Mixed case</div>
+          </div>
+          <div style="background:var(--color-white);border-radius:var(--radius-md);padding:var(--space-5);box-shadow:var(--shadow-sm)">
+            <div style="font-family:var(--font-serif);font-size:36px;font-weight:700;color:var(--color-secondary);line-height:1;margin-bottom:var(--space-3)">Arvo Serif</div>
+            <code>--font-serif</code>
+            <div style="margin-top:var(--space-2);font-size:11px;color:var(--color-muted)">Google Font · H2, buttons, CTAs</div>
+          </div>
+          <div style="background:var(--color-white);border-radius:var(--radius-md);padding:var(--space-5);box-shadow:var(--shadow-sm)">
+            <div style="font-family:var(--font-body);font-size:36px;font-weight:400;color:var(--color-secondary);line-height:1;margin-bottom:var(--space-3)">Lato Body</div>
+            <code>--font-body</code>
+            <div style="margin-top:var(--space-2);font-size:11px;color:var(--color-muted)">Google Font · Body text, nav, labels</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Type Scale</div>
+
+        <div class="sg-type-row">
+          <div style="font-family:var(--font-display);font-size:var(--fs-hero);font-weight:700;text-transform:uppercase;color:var(--color-secondary);line-height:var(--lh-hero)">Display</div>
+          <div class="sg-type-meta">
+            <span class="sg-type-meta-label">Display</span>
+            <span class="sg-type-meta-val">Melvin Tall · 96px / 74px · 700</span>
+            <code style="margin-top:4px">var(--font-display) var(--fs-hero)</code>
+          </div>
+        </div>
+
+        <div class="sg-type-row">
+          <div style="font-family:var(--font-heading);font-size:var(--fs-hero);font-weight:400;color:var(--color-secondary);line-height:var(--lh-hero)">Heading H1</div>
+          <div class="sg-type-meta">
+            <span class="sg-type-meta-label">H1</span>
+            <span class="sg-type-meta-val">Melvin Regular · 96px / 74px · 400</span>
+            <code style="margin-top:4px">var(--font-heading) var(--fs-hero)</code>
+          </div>
+        </div>
+
+        <div class="sg-type-row">
+          <div style="font-family:var(--font-serif);font-size:var(--fs-h2);font-weight:700;color:var(--color-secondary);line-height:var(--lh-h2)">What's for Breakfast?</div>
+          <div class="sg-type-meta">
+            <span class="sg-type-meta-label">H2</span>
+            <span class="sg-type-meta-val">Arvo · 34px / 40.8px · 700</span>
+            <code style="margin-top:4px">var(--font-serif) var(--fs-h2)</code>
+          </div>
+        </div>
+
+        <div class="sg-type-row">
+          <div style="font-family:var(--font-body);font-size:var(--fs-h3);font-weight:700;color:var(--color-secondary)">Bagels & Shmear</div>
+          <div class="sg-type-meta">
+            <span class="sg-type-meta-label">H3</span>
+            <span class="sg-type-meta-val">Lato · 20px · 700</span>
+            <code style="margin-top:4px">var(--font-body) var(--fs-h3)</code>
+          </div>
+        </div>
+
+        <div class="sg-type-row">
+          <div style="font-family:var(--font-body);font-size:var(--fs-body);font-weight:400;color:var(--color-secondary);line-height:var(--lh-body)">Fresh-baked every morning, our bagels are made with care and topped with your choice of shmear.</div>
+          <div class="sg-type-meta">
+            <span class="sg-type-meta-label">Body</span>
+            <span class="sg-type-meta-val">Lato · 18px / 27px · 400</span>
+            <code style="margin-top:4px">var(--font-body) var(--fs-body)</code>
+          </div>
+        </div>
+
+        <div class="sg-type-row">
+          <div style="font-family:var(--font-body);font-size:var(--fs-small);font-weight:400;color:var(--color-body)">Order online and pick up in store. Find your nearest location.</div>
+          <div class="sg-type-meta">
+            <span class="sg-type-meta-label">Small</span>
+            <span class="sg-type-meta-val">Lato · 14px / 22px · 400</span>
+            <code style="margin-top:4px">var(--font-body) var(--fs-small)</code>
+          </div>
+        </div>
+
+        <div class="sg-type-row">
+          <div style="font-family:var(--font-body);font-size:var(--fs-xs);font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--color-muted)">BREAKFAST · LUNCH · CATERING</div>
+          <div class="sg-type-meta">
+            <span class="sg-type-meta-label">Label / XS</span>
+            <span class="sg-type-meta-val">Lato · 12px · 700 · Uppercase</span>
+            <code style="margin-top:4px">var(--font-body) var(--fs-xs)</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 3. SPACING ── -->
+    <section class="sg-section" id="spacing">
+      <div class="sg-section__header">
+        <span class="sg-section__num">03</span>
+        <h2 class="sg-section__title">Spacing Scale</h2>
+      </div>
+      <div class="sg-note">All spacing is defined as CSS custom properties. Use <code>var(--space-N)</code> throughout — never hardcode px values.</div>
+      <div style="display:grid;gap:var(--space-2)">
+        <div class="sg-space-row"><span class="sg-space-label">--space-1</span><div class="sg-space-bar" style="width:4px"></div><span class="sg-space-val">4px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-2</span><div class="sg-space-bar" style="width:8px"></div><span class="sg-space-val">8px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-3</span><div class="sg-space-bar" style="width:12px"></div><span class="sg-space-val">12px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-4</span><div class="sg-space-bar" style="width:16px"></div><span class="sg-space-val">16px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-5</span><div class="sg-space-bar" style="width:20px"></div><span class="sg-space-val">20px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-6</span><div class="sg-space-bar" style="width:24px"></div><span class="sg-space-val">24px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-7</span><div class="sg-space-bar" style="width:32px"></div><span class="sg-space-val">32px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-8</span><div class="sg-space-bar" style="width:40px"></div><span class="sg-space-val">40px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-9</span><div class="sg-space-bar" style="width:48px"></div><span class="sg-space-val">48px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-10</span><div class="sg-space-bar" style="width:64px"></div><span class="sg-space-val">64px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-11</span><div class="sg-space-bar" style="width:80px"></div><span class="sg-space-val">80px</span></div>
+        <div class="sg-space-row"><span class="sg-space-label">--space-12</span><div class="sg-space-bar" style="width:96px"></div><span class="sg-space-val">96px</span></div>
+      </div>
+    </section>
+
+    <!-- ── 4. BORDER RADIUS ── -->
+    <section class="sg-section sg-section--cream" id="radius">
+      <div class="sg-section__header">
+        <span class="sg-section__num">04</span>
+        <h2 class="sg-section__title">Border Radius</h2>
+      </div>
+      <div class="sg-radius-grid">
+        <div class="sg-radius-item">
+          <div class="sg-radius-box" style="border-radius:var(--radius-sm)"></div>
+          <div class="sg-radius-name">SM</div>
+          <div class="sg-radius-var">--radius-sm</div>
+          <div style="font-size:11px;color:var(--color-muted)">4px · inputs</div>
+        </div>
+        <div class="sg-radius-item">
+          <div class="sg-radius-box" style="border-radius:var(--radius-md)"></div>
+          <div class="sg-radius-name">MD</div>
+          <div class="sg-radius-var">--radius-md</div>
+          <div style="font-size:11px;color:var(--color-muted)">8px · buttons</div>
+        </div>
+        <div class="sg-radius-item">
+          <div class="sg-radius-box" style="border-radius:var(--radius-lg)"></div>
+          <div class="sg-radius-name">LG</div>
+          <div class="sg-radius-var">--radius-lg</div>
+          <div style="font-size:11px;color:var(--color-muted)">16px · cards</div>
+        </div>
+        <div class="sg-radius-item">
+          <div class="sg-radius-box" style="border-radius:var(--radius-xl)"></div>
+          <div class="sg-radius-name">XL</div>
+          <div class="sg-radius-var">--radius-xl</div>
+          <div style="font-size:11px;color:var(--color-muted)">24px · modals</div>
+        </div>
+        <div class="sg-radius-item">
+          <div class="sg-radius-box" style="border-radius:var(--radius-full)"></div>
+          <div class="sg-radius-name">Full</div>
+          <div class="sg-radius-var">--radius-full</div>
+          <div style="font-size:11px;color:var(--color-muted)">9999px · pills</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 5. SHADOWS ── -->
+    <section class="sg-section" id="shadows">
+      <div class="sg-section__header">
+        <span class="sg-section__num">05</span>
+        <h2 class="sg-section__title">Shadows</h2>
+      </div>
+      <div class="sg-shadow-grid">
+        <div class="sg-shadow-item">
+          <div class="sg-shadow-box" style="box-shadow:none;border:1px solid var(--color-border)"></div>
+          <div class="sg-shadow-label">none</div>
+        </div>
+        <div class="sg-shadow-item">
+          <div class="sg-shadow-box" style="box-shadow:var(--shadow-sm)"></div>
+          <div class="sg-shadow-label">--shadow-sm<br>subtle lift</div>
+        </div>
+        <div class="sg-shadow-item">
+          <div class="sg-shadow-box" style="box-shadow:var(--shadow-nav)"></div>
+          <div class="sg-shadow-label">--shadow-nav<br>sticky header</div>
+        </div>
+        <div class="sg-shadow-item">
+          <div class="sg-shadow-box" style="box-shadow:var(--shadow-card)"></div>
+          <div class="sg-shadow-label">--shadow-card<br>product cards</div>
+        </div>
+        <div class="sg-shadow-item">
+          <div class="sg-shadow-box" style="box-shadow:var(--shadow-input)"></div>
+          <div class="sg-shadow-label">--shadow-input<br>focus glow</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 6. BUTTONS ── -->
+    <section class="sg-section sg-section--cream" id="buttons">
+      <div class="sg-section__header">
+        <span class="sg-section__num">06</span>
+        <h2 class="sg-section__title">Buttons</h2>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Variants</div>
+        <div class="sg-btn-row">
+          <button class="btn-primary">Order Now</button>
+          <button class="btn-secondary">Log In</button>
+          <button class="btn-outline">Learn More</button>
+          <button class="btn-ghost">View Menu</button>
+          <button class="btn-danger">Remove</button>
+        </div>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Sizes</div>
+        <div class="sg-btn-row" style="align-items:flex-end">
+          <button class="btn-primary btn-sm">Small</button>
+          <button class="btn-primary">Default</button>
+          <button class="btn-primary btn-lg">Large</button>
+        </div>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">On Dark Background</div>
+        <div style="background:var(--color-secondary);padding:var(--space-6);border-radius:var(--radius-lg)">
+          <div class="sg-btn-row">
+            <button class="btn-primary">Order Now</button>
+            <button style="display:inline-flex;align-items:center;background:transparent;color:var(--color-white);font-family:var(--font-serif);font-size:var(--fs-small);font-weight:var(--fw-bold);text-transform:uppercase;letter-spacing:0.04em;padding:9px 20px;border-radius:var(--radius-md);border:2px solid rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s">Rewards</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Token Reference</div>
+        <table class="sg-util-table">
+          <thead>
+            <tr><th>Class</th><th>Background Token</th><th>Color Token</th><th>Font Token</th><th>Radius Token</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>.btn-primary</code></td><td><code>--color-primary</code></td><td><code>--color-secondary</code></td><td><code>--font-serif</code></td><td><code>--radius-md</code></td></tr>
+            <tr><td><code>.btn-secondary</code></td><td><code>--color-secondary</code></td><td><code>--color-white</code></td><td><code>--font-serif</code></td><td><code>--radius-md</code></td></tr>
+            <tr><td><code>.btn-outline</code></td><td>transparent</td><td><code>--color-secondary</code></td><td><code>--font-serif</code></td><td><code>--radius-md</code></td></tr>
+            <tr><td><code>.btn-danger</code></td><td><code>--color-accent-red</code></td><td><code>--color-white</code></td><td><code>--font-serif</code></td><td><code>--radius-md</code></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 7. FORMS ── -->
+    <section class="sg-section" id="forms">
+      <div class="sg-section__header">
+        <span class="sg-section__num">07</span>
+        <h2 class="sg-section__title">Forms</h2>
+      </div>
+      <div class="sg-form-grid">
+        <div class="sg-form-field">
+          <label class="sg-label">First Name</label>
+          <input class="sg-input" type="text" placeholder="Albert">
+        </div>
+        <div class="sg-form-field">
+          <label class="sg-label">Last Name</label>
+          <input class="sg-input" type="text" placeholder="Einstein">
+        </div>
+        <div class="sg-form-field">
+          <label class="sg-label">Email Address</label>
+          <input class="sg-input" type="email" placeholder="albert@bagels.com">
+        </div>
+        <div class="sg-form-field">
+          <label class="sg-label">Phone Number</label>
+          <input class="sg-input" type="tel" placeholder="(303) 555-0100">
+        </div>
+        <div class="sg-form-field">
+          <label class="sg-label">Error State</label>
+          <input class="sg-input sg-input--error" type="text" value="bad@input">
+          <span class="sg-hint sg-hint--error">This email is already in use.</span>
+        </div>
+        <div class="sg-form-field">
+          <label class="sg-label">Success State</label>
+          <input class="sg-input sg-input--success" type="text" value="valid@email.com">
+          <span class="sg-hint" style="color:var(--color-success)">Looks good!</span>
+        </div>
+        <div class="sg-form-field">
+          <label class="sg-label">Favorite Bagel</label>
+          <select class="sg-input">
+            <option>Everything Bagel</option>
+            <option>Asiago Bagel</option>
+            <option>Plain Bagel</option>
+            <option>Sesame Bagel</option>
+          </select>
+        </div>
+        <div class="sg-form-field">
+          <label class="sg-label">Password</label>
+          <input class="sg-input" type="password" placeholder="••••••••">
+          <span class="sg-hint">Must be at least 8 characters.</span>
+        </div>
+        <div class="sg-form-field sg-form-field--full">
+          <label class="sg-label">Special Instructions</label>
+          <textarea class="sg-input" rows="3" placeholder="Light cream cheese, extra lox..."></textarea>
+        </div>
+        <div class="sg-form-field sg-form-field--full" style="align-items:flex-start">
+          <button class="btn-primary btn-lg">Submit Order</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 8. BADGES ── -->
+    <section class="sg-section sg-section--cream" id="badges">
+      <div class="sg-section__header">
+        <span class="sg-section__num">08</span>
+        <h2 class="sg-section__title">Badges &amp; Labels</h2>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Pill Badges</div>
+        <div class="sg-badge-row">
+          <span class="badge badge--primary">Order Now</span>
+          <span class="badge badge--dark">Featured</span>
+          <span class="badge badge--accent">Limited</span>
+          <span class="badge badge--success">Available</span>
+          <span class="badge badge--muted">Sold Out</span>
+          <span class="badge badge--cream">Popular</span>
+          <span class="badge badge--outline">New Flavor</span>
+        </div>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Hex Badges (brand stamp)</div>
+        <div class="sg-badge-row" style="align-items:flex-end;gap:var(--space-6)">
+          <div style="text-align:center">
+            <div class="badge-hex" style="margin:0 auto var(--space-3)">NEW!</div>
+            <code style="font-size:10px">.badge-hex</code>
+          </div>
+          <div style="text-align:center">
+            <div class="badge-hex badge-hex--lg" style="background:var(--color-primary);color:var(--color-secondary);margin:0 auto var(--space-3)">HOT</div>
+            <code style="font-size:10px">.badge-hex--lg + gold</code>
+          </div>
+          <div style="text-align:center">
+            <div class="badge-hex badge-hex--lg" style="background:var(--color-secondary);color:var(--color-primary);margin:0 auto var(--space-3)">BEST</div>
+            <code style="font-size:10px">.badge-hex--lg + dark</code>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 9. CARDS ── -->
+    <section class="sg-section" id="cards">
+      <div class="sg-section__header">
+        <span class="sg-section__num">09</span>
+        <h2 class="sg-section__title">Cards</h2>
+      </div>
+      <div class="sg-card-grid">
+        <div class="card">
+          <div class="card__img-placeholder">Bagel &amp; Shmear</div>
+          <div class="card__body">
+            <div class="card__eyebrow">Breakfast · Fan Favorite</div>
+            <div class="card__title">Classic Everything Bagel</div>
+            <div class="card__desc">Hand-rolled, kettle-boiled, and baked fresh every morning. Topped with your choice of shmear.</div>
+          </div>
+          <div class="card__footer">
+            <div>
+              <div class="card__price">$4.99</div>
+              <div class="card__calorie">380 cal</div>
+            </div>
+            <button class="btn-primary btn-sm">Add</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__img-placeholder" style="background:linear-gradient(135deg,#e5a637 0%,var(--color-accent-red) 100%)">Egg Sandwich</div>
+          <div class="card__body">
+            <div class="card__eyebrow">Signature · <span style="color:var(--color-accent-red)">New</span></div>
+            <div class="card__title">Farmhouse Egg Sandwich</div>
+            <div class="card__desc">Cage-free egg, smoked bacon, cheddar, and sriracha on a toasted Asiago bagel.</div>
+          </div>
+          <div class="card__footer">
+            <div>
+              <div class="card__price">$8.49</div>
+              <div class="card__calorie">590 cal</div>
+            </div>
+            <button class="btn-primary btn-sm">Add</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card__img-placeholder" style="background:linear-gradient(135deg,var(--color-secondary) 0%,var(--color-dark) 100%);color:var(--color-primary)">Coffee</div>
+          <div class="card__body">
+            <div class="card__eyebrow">Drinks · Breakfast &amp; Brew</div>
+            <div class="card__title">Iced Coffee</div>
+            <div class="card__desc">Smooth cold brew poured over ice. Available in large or extra-large. Add flavored syrups.</div>
+          </div>
+          <div class="card__footer">
+            <div>
+              <div class="card__price">$3.99</div>
+              <div class="card__calorie">10 cal</div>
+            </div>
+            <button class="btn-primary btn-sm">Add</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 10. ANNOUNCEMENT BAR ── -->
+    <section class="sg-section sg-section--cream" id="announcement">
+      <div class="sg-section__header">
+        <span class="sg-section__num">10</span>
+        <h2 class="sg-section__title">Announcement Bar</h2>
+      </div>
+      <div style="border-radius:var(--radius-md);overflow:hidden;box-shadow:var(--shadow-sm)">
+        <div class="announcement-bar">
+          $8 Breakfast &amp; Brew: Egg sandwich + Lg. Hot or Iced Coffee &nbsp;·&nbsp; <a href="#">ORDER NOW</a>
+        </div>
+        <div style="background:var(--color-white);padding:var(--space-4) var(--space-5);font-size:11px;color:var(--color-muted);font-family:monospace">
+          .announcement-bar · bg: --color-primary · color: --color-secondary · font: --font-body · size: --fs-small · padding: --space-2 --space-6
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 11. NAVIGATION ── -->
+    <section class="sg-section" id="navigation">
+      <div class="sg-section__header">
+        <span class="sg-section__num">11</span>
+        <h2 class="sg-section__title">Navigation</h2>
+      </div>
+      <div style="border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow-card)">
+        <div class="announcement-bar" style="border-radius:0">
+          New! Hot Honey Smear – start your morning SWICY! &nbsp;<a href="#">ORDER NOW</a>
+        </div>
+        <nav class="site-nav">
+          <div class="site-nav__logo">EINSTEIN<br>BROS<br>BAGELS</div>
+          <ul class="site-nav__links">
+            <li><a href="#">Menu</a></li>
+            <li><a href="#">Rewards</a></li>
+            <li><a href="#">Gift Cards</a></li>
+            <li><a href="#">Catering</a></li>
+          </ul>
+          <div class="site-nav__actions">
+            <div class="site-nav__location">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Find a location
+            </div>
+            <button class="btn-secondary">Log In</button>
+            <button class="btn-primary">Order Now</button>
+          </div>
+        </nav>
+      </div>
+    </section>
+
+    <!-- ── 12. HERO ── -->
+    <section class="sg-section sg-section--cream" id="hero">
+      <div class="sg-section__header">
+        <span class="sg-section__num">12</span>
+        <h2 class="sg-section__title">Hero / Banner</h2>
+      </div>
+      <div class="sg-hero-demo">
+        <div class="sg-hero-demo__content">
+          <div class="sg-hero-demo__eyebrow">New · Hot Honey Shmear</div>
+          <div class="sg-hero-demo__title">Bee Swicy</div>
+          <div class="sg-hero-demo__desc">It's sweet, it's spicy, it's swicy! See what all the buzz is about.</div>
+          <button class="btn-hero" style="display:inline-block;background:var(--color-primary);color:var(--color-secondary);font-family:var(--font-serif);font-size:var(--fs-small);font-weight:700;text-transform:uppercase;letter-spacing:0.06em;padding:10px 24px;border-radius:var(--radius-md);border:2px solid var(--color-secondary);cursor:pointer">Order Now</button>
+        </div>
+        <div class="sg-hero-demo__badge">
+          <div class="badge-hex badge-hex--lg">NEW!</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 13. SECTION BACKGROUNDS ── -->
+    <section class="sg-section" id="sections">
+      <div class="sg-section__header">
+        <span class="sg-section__num">13</span>
+        <h2 class="sg-section__title">Section Backgrounds</h2>
+      </div>
+      <div class="sg-section-demo sg-section-demo--white">
+        <h3 style="color:var(--color-secondary);font-family:var(--font-serif)">White Section</h3>
+        <p style="color:var(--color-body);margin-top:var(--space-3)">Default white background — primary content areas, cards, detail pages.</p>
+        <div style="margin-top:var(--space-3)"><code>background: --color-white</code></div>
+      </div>
+      <div class="sg-section-demo sg-section-demo--cream">
+        <h3 style="color:var(--color-secondary);font-family:var(--font-serif)">Cream Section</h3>
+        <p style="color:var(--color-body);margin-top:var(--space-3)">Warm off-white — alternating rows, rewards, featured categories.</p>
+        <div style="margin-top:var(--space-3)"><code>background: --color-cream (#EFE7DE)</code></div>
+      </div>
+      <div class="sg-section-demo sg-section-demo--gold">
+        <h3 style="color:var(--color-secondary);font-family:var(--font-serif)">Gold Section</h3>
+        <p style="color:var(--color-secondary);margin-top:var(--space-3)">Brand golden yellow — promotions, catering callouts, rewards banners.</p>
+        <div style="margin-top:var(--space-3)"><code>background: --color-primary (#FEBC11)</code></div>
+      </div>
+      <div class="sg-section-demo sg-section-demo--dark">
+        <h3>Dark Section</h3>
+        <p style="color:rgba(255,255,255,0.7);margin-top:var(--space-3)">Near-black — app download CTAs, loyalty program, dramatic emphasis.</p>
+        <div style="margin-top:var(--space-3)"><code style="background:rgba(255,255,255,0.1);color:var(--color-primary)">background: --color-dark (#32373C)</code></div>
+      </div>
+    </section>
+
+    <!-- ── 14. FOOTER ── -->
+    <section class="sg-section sg-section--cream" id="footer">
+      <div class="sg-section__header">
+        <span class="sg-section__num">14</span>
+        <h2 class="sg-section__title">Footer</h2>
+      </div>
+      <div class="sg-footer-demo">
+        <div class="sg-footer-demo__grid">
+          <div>
+            <div class="sg-footer-demo__heading">Menu</div>
+            <ul class="sg-footer-demo__links">
+              <li><a href="#">Bagels &amp; Shmear</a></li>
+              <li><a href="#">Egg Sandwiches</a></li>
+              <li><a href="#">Coffee &amp; Drinks</a></li>
+              <li><a href="#">Catering</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="sg-footer-demo__heading">Company</div>
+            <ul class="sg-footer-demo__links">
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Newsroom</a></li>
+              <li><a href="#">Franchising</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="sg-footer-demo__heading">Support</div>
+            <ul class="sg-footer-demo__links">
+              <li><a href="#">Gift Cards</a></li>
+              <li><a href="#">Rewards</a></li>
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">Accessibility</a></li>
+            </ul>
+          </div>
+          <div>
+            <div class="sg-footer-demo__heading">Get the App</div>
+            <ul class="sg-footer-demo__links">
+              <li><a href="#">App Store</a></li>
+              <li><a href="#">Google Play</a></li>
+            </ul>
+            <div style="margin-top:var(--space-5)">
+              <div class="sg-footer-demo__heading">Follow Us</div>
+              <div style="display:flex;gap:var(--space-3);margin-top:var(--space-2)">
+                <span style="font-size:18px">📘</span>
+                <span style="font-size:18px">📸</span>
+                <span style="font-size:18px">▶️</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sg-footer-demo__bottom">
+          © 2026 Einstein Noah Restaurant Group, Inc. All rights reserved. · Privacy Policy · Terms of Use
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 15. UTILITIES ── -->
+    <section class="sg-section" id="utilities">
+      <div class="sg-section__header">
+        <span class="sg-section__num">15</span>
+        <h2 class="sg-section__title">Utility Classes</h2>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Color — Text</div>
+        <table class="sg-util-table">
+          <thead><tr><th>Class</th><th>Token</th><th>Preview</th></tr></thead>
+          <tbody>
+            <tr><td><code>.text-primary</code></td><td><code>--color-primary</code></td><td><span style="color:var(--color-primary);font-weight:700;font-size:18px">Aa</span></td></tr>
+            <tr><td><code>.text-secondary</code></td><td><code>--color-secondary</code></td><td><span style="color:var(--color-secondary);font-weight:700;font-size:18px">Aa</span></td></tr>
+            <tr><td><code>.text-body</code></td><td><code>--color-body</code></td><td><span style="color:var(--color-body);font-weight:700;font-size:18px">Aa</span></td></tr>
+            <tr><td><code>.text-muted</code></td><td><code>--color-muted</code></td><td><span style="color:var(--color-muted);font-weight:700;font-size:18px">Aa</span></td></tr>
+            <tr><td><code>.text-white</code></td><td><code>--color-white</code></td><td><span style="color:var(--color-white);font-weight:700;font-size:18px;background:var(--color-dark);padding:0 4px;border-radius:2px">Aa</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Color — Background</div>
+        <table class="sg-util-table">
+          <thead><tr><th>Class</th><th>Token</th><th>Swatch</th></tr></thead>
+          <tbody>
+            <tr><td><code>.bg-primary</code></td><td><code>--color-primary</code></td><td><div class="sg-preview-box" style="background:var(--color-primary)"></div></td></tr>
+            <tr><td><code>.bg-secondary</code></td><td><code>--color-secondary</code></td><td><div class="sg-preview-box" style="background:var(--color-secondary)"></div></td></tr>
+            <tr><td><code>.bg-cream</code></td><td><code>--color-cream</code></td><td><div class="sg-preview-box" style="background:var(--color-cream)"></div></td></tr>
+            <tr><td><code>.bg-dark</code></td><td><code>--color-dark</code></td><td><div class="sg-preview-box" style="background:var(--color-dark)"></div></td></tr>
+            <tr><td><code>.bg-white</code></td><td><code>--color-white</code></td><td><div class="sg-preview-box" style="background:var(--color-white);border:1px solid var(--color-border)"></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Layout</div>
+        <table class="sg-util-table">
+          <thead><tr><th>Class</th><th>Output</th></tr></thead>
+          <tbody>
+            <tr><td><code>.container</code></td><td>max-width: 1440px · margin: 0 auto · padding: 0 32px</td></tr>
+            <tr><td><code>.flex</code></td><td>display: flex</td></tr>
+            <tr><td><code>.flex-center</code></td><td>display: flex · align-items: center · justify-content: center</td></tr>
+            <tr><td><code>.flex-between</code></td><td>display: flex · align-items: center · justify-content: space-between</td></tr>
+            <tr><td><code>.grid-2 / 3 / 4</code></td><td>display: grid · repeat(N, 1fr) · gap: --space-6</td></tr>
+            <tr><td><code>.gap-3 / 4 / 5 / 6</code></td><td>gap: --space-3 / 4 / 5 / 6</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sg-group">
+        <div class="sg-group__label">Spacing — Margin &amp; Padding</div>
+        <table class="sg-util-table">
+          <thead><tr><th>Class</th><th>Token</th><th>Value</th></tr></thead>
+          <tbody>
+            <tr><td><code>.mt-1 … .mt-8</code></td><td><code>--space-1 … --space-8</code></td><td>4px → 40px</td></tr>
+            <tr><td><code>.mb-1 … .mb-8</code></td><td><code>--space-1 … --space-8</code></td><td>4px → 40px</td></tr>
+            <tr><td><code>.p-4 / .p-5 / .p-6</code></td><td><code>--space-4 / 5 / 6</code></td><td>16px / 20px / 24px</td></tr>
+            <tr><td><code>.px-6</code></td><td><code>--space-6</code></td><td>padding-left + right: 24px</td></tr>
+            <tr><td><code>.py-8</code></td><td><code>--space-8</code></td><td>padding-top + bottom: 40px</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Page Footer -->
+    <footer style="background:var(--color-dark-alt);color:rgba(255,255,255,0.3);text-align:center;padding:var(--space-6);font-size:var(--fs-xs);font-family:var(--font-body)">
+      Einstein Bros. Bagels Design System · Scraped &amp; documented February 2026 · <span style="color:var(--color-primary)">einstein-bros.css</span>
+    </footer>
+
+  </main>
+</body>
+</html>
